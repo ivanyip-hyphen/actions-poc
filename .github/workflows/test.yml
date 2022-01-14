@@ -6,6 +6,9 @@ on:
       environment:
         type: environment
         description: Select the environment
+        options:
+          - dev
+          - staging
         required: true
       boolean:
         type: boolean
