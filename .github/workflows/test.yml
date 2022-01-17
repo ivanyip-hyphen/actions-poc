@@ -43,8 +43,6 @@ jobs:
   build:
     needs: prepare
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
         name: checkout commit
@@ -57,3 +55,4 @@ jobs:
           echo "boolean is ${{ github.event.inputs.boolean }}"
           echo "commit is ${{ github.event.inputs.commit }}"
           echo "ref is ${{ github.ref }}"
+          echo "matrix is ${{fromJSON(needs.prepare.outputs.matrix)}}"
