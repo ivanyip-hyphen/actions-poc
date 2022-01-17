@@ -39,7 +39,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "::set-output name=matrix::{\"markets\":[{\"singsaver\":${{github.event.inputs.singsaver}}},\"moneyhero\":${{github.event.inputs.moneyhero}}},\"money101\":${{github.event.inputs.money101}}},\"comparehero\":${{github.event.inputs.comparehero}}},\"moneyguru\":${{github.event.inputs.moneyguru}}},\"moneymax\":${{github.event.inputs.moneymax}}}]}"
+        run: echo "::set-output name=matrix::{\"include\":[{\"singsaver\":${{github.event.inputs.singsaver}}},\"moneyhero\":${{github.event.inputs.moneyhero}}},\"money101\":${{github.event.inputs.money101}}},\"comparehero\":${{github.event.inputs.comparehero}}},\"moneyguru\":${{github.event.inputs.moneyguru}}},\"moneymax\":${{github.event.inputs.moneymax}}}]}"
   build:
     needs: prepare
     runs-on: ubuntu-latest
