@@ -57,4 +57,3 @@ jobs:
           echo "boolean is ${{ github.event.inputs.boolean }}"
           echo "commit is ${{ github.event.inputs.commit }}"
           echo "ref is ${{ github.ref }}"
-          echo "::set-output name=matrix::{\"markets\":[{\"singsaver\":${{github.event.inputs.singsaver}}},\"moneyhero\":${{github.event.inputs.moneyhero}}},\"money101\":${{github.event.inputs.money101}}},\"comparehero\":${{github.event.inputs.comparehero}}},\"moneyguru\":${{github.event.inputs.moneyguru}}},\"moneymax\":${{github.event.inputs.moneymax}}}]}"
