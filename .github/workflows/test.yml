@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         name: checkout commit
         with:
-          ref: 5c8b9e8
+          ref: 5c8b9e81df024b67254e9b40d310dab8cbeab55d
 
       - name: greet
         run: | 
