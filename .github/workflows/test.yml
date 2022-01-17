@@ -16,9 +16,9 @@ on:
         - bar
         - baz
       commit:
-        required: true
+        required: false
         type: string
-        description: Enter commit hash
+        description: Enter commit hash (use branch HEAD if not specified)
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         name: checkout commit
         with:
-          ref: 5c8b9e81df024b67254e9b40d310dab8cbeab55d
+          ref: ${{ github.event.inputs.commit }}
 
       - name: greet
         run: | 
