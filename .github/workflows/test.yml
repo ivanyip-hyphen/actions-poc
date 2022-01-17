@@ -26,8 +26,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        name: checkout commit
         with:
-          ref: f23523
+          ref: 5c8b9e8
 
       - name: greet
         run: | 
