@@ -3,18 +3,30 @@ name: CI
 on:
   workflow_dispatch:
     inputs:
-      boolean:
+      singsaver:
+        required: false
         type: boolean
-        description: True or False
-        required: true
-      choice:
-        type: choice
-        required: true
-        description: Make a choice
-        options:
-        - foo
-        - bar
-        - baz
+        description: singsaver
+      moneyhero:
+        required: false
+        type: boolean
+        description: moneyhero
+      money101:
+        required: false
+        type: boolean
+        description: money101
+      comparehero:
+        required: false
+        type: boolean
+        description: comparehero
+      moneyguru:
+        required: false
+        type: boolean
+        description: moneyguru
+      moneymax:
+        required: false
+        type: boolean
+        description: moneymax
       commit:
         required: false
         type: string
@@ -36,3 +48,4 @@ jobs:
           echo "boolean is ${{ github.event.inputs.boolean }}"
           echo "commit is ${{ github.event.inputs.commit }}"
           echo "ref is ${{ github.ref }}"
+          echo "::set-output name=matrix::{\"markets\":[{\"singsaver\":${{github.event.inputs.singsaver}}},\"moneyhero\":${{github.event.inputs.moneyhero}}},\"money101\":${{github.event.inputs.money101}}},\"comparehero\":${{github.event.inputs.comparehero}}},\"moneyguru\":${{github.event.inputs.moneyguru}}},\"moneymax\":${{github.event.inputs.moneymax}}}]}"
