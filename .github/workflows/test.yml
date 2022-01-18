@@ -68,4 +68,4 @@ jobs:
           echo "boolean is ${{ github.event.inputs.boolean }}"
           echo "commit is ${{ github.event.inputs.commit }}"
           echo "ref is ${{ github.ref }}"
-          echo "matrix is ${{fromJSON(needs.prepare.outputs.matrix)}}"
+          echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
