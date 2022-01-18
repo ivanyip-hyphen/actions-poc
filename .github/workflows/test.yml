@@ -41,6 +41,8 @@ jobs:
       - id: set-matrix
         run: |
           echo $INPUT_SINGSAVER
+          echo $INPUT_COMMIT
+
   build:
     needs: prepare
     runs-on: ubuntu-latest
