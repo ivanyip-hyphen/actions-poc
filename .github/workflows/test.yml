@@ -40,7 +40,7 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          "::echo::on"
+          echo '::echo::on'
           markets=()
           if [[ ${{ github.event.inputs.singsaver }} == true ]]; then markets+=('singsaver'); fi;
           if [[ ${{ github.event.inputs.moneyhero }} == true ]]; then markets+=('moneyhero'); fi;
