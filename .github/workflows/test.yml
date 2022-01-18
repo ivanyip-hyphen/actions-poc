@@ -45,7 +45,7 @@ jobs:
           #  echo ${${{ github.event.inputs }}[$i]}
           # done
           inputs="${{ github.event.inputs }}"
-          for input in $inputs; do
+          for input in ${!inputs[@]}; do
             echo "$input"
           done
   build:
