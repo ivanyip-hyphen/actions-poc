@@ -42,7 +42,7 @@ jobs:
         run: |
           for i in singsaver moneyhero money101 comparehero moneyguru moneymax
           do
-            echo ${${{ github.event.inputs }}[$market]}
+            echo ${${{ github.event.inputs }}[$i]}
           done
   build:
     needs: prepare
