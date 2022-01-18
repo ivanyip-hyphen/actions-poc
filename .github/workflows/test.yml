@@ -48,7 +48,7 @@ jobs:
           if [[ ${{github.event.inputs.comparehero }} ]]; then markets+=('comparehero'); fi
           if [[ ${{github.event.inputs.moneyguru }} ]]; then markets+=('moneyguru'); fi
           if [[ ${{github.event.inputs.moneymax }} ]]; then markets+=('moneymax'); fi
-          echo "::set-output name=matrix::{\"markets\": $markets[@]}"
+          echo "::set-output name=matrix::{\"markets\": $(jq --compact-output --null-input '$ARGS.positional' --args "${markets[@]}")}"
 
   build:
     needs: prepare
