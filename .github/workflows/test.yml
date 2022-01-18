@@ -42,12 +42,12 @@ jobs:
         run: |
           echo '::echo::on'
           markets=()
-          if [[ ${{ github.event.inputs.singsaver }} == true ]]; then markets+=('singsaver'); fi;
-          if [[ ${{ github.event.inputs.moneyhero }} == true ]]; then markets+=('moneyhero'); fi;
-          if [[ ${{ github.event.inputs.money101 }} == true ]]; then markets+=('money101'); fi;
-          if [[ ${{ github.event.inputs.comparehero == true }} ]]; then markets+=('comparehero'); fi;
-          if [[ ${{ github.event.inputs.moneyguru == true }} ]]; then markets+=('moneyguru'); fi;
-          if [[ ${{ github.event.inputs.moneymax == true }} ]]; then markets+=('moneymax'); fi;
+          if [[ ${{ github.event.inputs.singsaver }} == "true" ]]; then markets+=('singsaver'); fi;
+          if [[ ${{ github.event.inputs.moneyhero }} == "true" ]]; then markets+=('moneyhero'); fi;
+          if [[ ${{ github.event.inputs.money101 }} == "true" ]]; then markets+=('money101'); fi;
+          if [[ ${{ github.event.inputs.comparehero == "true" }} ]]; then markets+=('comparehero'); fi;
+          if [[ ${{ github.event.inputs.moneyguru == "true" }} ]]; then markets+=('moneyguru'); fi;
+          if [[ ${{ github.event.inputs.moneymax == "true" }} ]]; then markets+=('moneymax'); fi;
           echo "::set-output name=matrix::{\"markets\": $(jq --compact-output --null-input '$ARGS.positional' --args "${markets[@]}")}"
 
   build:
