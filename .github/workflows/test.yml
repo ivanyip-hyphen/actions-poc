@@ -47,7 +47,8 @@ jobs:
           if [[ ${{github.event.inputs.comparehero }} ]]; then markets+=('comparehero'); fi
           if [[ ${{github.event.inputs.moneyguru }} ]]; then markets+=('moneyguru'); fi
           if [[ ${{github.event.inputs.moneymax }} ]]; then markets+=('moneymax'); fi
-          echo "::set-output name=matrix::$markets"
+          echo "${markets}"
+          echo "::set-output name=matrix::${markets}"
 
   build:
     needs: prepare
