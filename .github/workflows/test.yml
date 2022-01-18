@@ -44,10 +44,11 @@ jobs:
           # do
           #  echo ${${{ github.event.inputs }}[$i]}
           # done
-          inputs="${{ fromJSON(github.event.inputs) }}"
-          for input in ${!inputs[@]}; do
-            echo "$input"
-          done
+          # inputs="${{ fromJSON(github.event.inputs) }}"
+          # for input in ${!inputs[@]}; do
+          #   echo "$input"
+          # done
+          echo $INPUT_SINGSAVER
   build:
     needs: prepare
     runs-on: ubuntu-latest
