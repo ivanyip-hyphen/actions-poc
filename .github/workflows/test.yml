@@ -41,12 +41,12 @@ jobs:
       - id: set-matrix
         run: |
           markets=()
-          if [[ ${{github.event.inputs.singsaver }} ]] then markets+=('singsaver'); fi
-          if [[ ${{github.event.inputs.moneyhero }} ]] then markets+=('moneyhero'); fi
-          if [[ ${{github.event.inputs.money101 }} ]] then markets+=('money101'); fi
-          if [[ ${{github.event.inputs.comparehero }} ]] then markets+=('comparehero'); fi
-          if [[ ${{github.event.inputs.moneyguru }} ]] then markets+=('moneyguru'); fi
-          if [[ ${{github.event.inputs.moneymax }} ]] then markets+=('moneymax'); fi
+          if [[ ${{github.event.inputs.singsaver }} ]]; then markets+=('singsaver'); fi
+          if [[ ${{github.event.inputs.moneyhero }} ]]; then markets+=('moneyhero'); fi
+          if [[ ${{github.event.inputs.money101 }} ]]; then markets+=('money101'); fi
+          if [[ ${{github.event.inputs.comparehero }} ]]; then markets+=('comparehero'); fi
+          if [[ ${{github.event.inputs.moneyguru }} ]]; then markets+=('moneyguru'); fi
+          if [[ ${{github.event.inputs.moneymax }} ]]; then markets+=('moneymax'); fi
           echo "::set-output name=matrix::$markets"
 
   build:
