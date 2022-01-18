@@ -69,5 +69,5 @@ jobs:
           echo "commit is ${{ github.event.inputs.commit }}"
           echo "ref is ${{ github.ref }}"
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
-          echo "market is ${{matrix.market}}"
+          echo "market is ${{matrix.markets}}"
           echo ${GITHUB_REF##*/}
