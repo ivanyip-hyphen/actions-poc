@@ -42,6 +42,7 @@ jobs:
         run: |
           echo '::echo::on'
           markets=()
+          echo ${{toJSON(github.events.inputs)}}
           if [[ ${{ github.event.inputs.singsaver }} == "true" ]]; then markets+=('singsaver'); fi;
           if [[ ${{ github.event.inputs.moneyhero }} == "true" ]]; then markets+=('moneyhero'); fi;
           if [[ ${{ github.event.inputs.money101 }} == "true" ]]; then markets+=('money101'); fi;
