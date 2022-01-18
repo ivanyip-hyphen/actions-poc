@@ -44,7 +44,7 @@ jobs:
           # do
           #  echo ${${{ github.event.inputs }}[$i]}
           # done
-          inputs="${{ github.event.inputs }}"
+          inputs="${{ fromJSON(github.event.inputs) }}"
           for input in ${!inputs[@]}; do
             echo "$input"
           done
