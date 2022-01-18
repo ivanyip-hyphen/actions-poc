@@ -47,15 +47,14 @@ jobs:
           if [[ ${{github.event.inputs.comparehero }} ]]; then markets+=('comparehero'); fi
           if [[ ${{github.event.inputs.moneyguru }} ]]; then markets+=('moneyguru'); fi
           if [[ ${{github.event.inputs.moneymax }} ]]; then markets+=('moneymax'); fi
-          echo "${markets}"
-          echo "::set-output name=matrix::${markets}"
+          echo "${markets[@]}"
+          echo "::set-output name=matrix::{\"markets\":$(printf "%q " "${markets[@]}")}""
 
   build:
     needs: prepare
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        markets: ${{fromJSON(needs.prepare.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
         name: checkout commit
