@@ -40,12 +40,21 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          echo $INPUT_SINGSAVER
-          echo $INPUT_COMMIT
+          markets=()
+          if [[ ${{github.event.inputs.singsaver }} ]] then markets+=('singsaver')
+          if [[ ${{github.event.inputs.moneyhero }} ]] then markets+=('moneyhero')
+          if [[ ${{github.event.inputs.money101 }} ]] then markets+=('money101')
+          if [[ ${{github.event.inputs.comparehero }} ]] then markets+=('comparehero')
+          if [[ ${{github.event.inputs.moneyguru }} ]] then markets+=('moneyguru')
+          if [[ ${{github.event.inputs.moneymax }} ]] then markets+=('moneymax')
+          echo "::set-output name=matrix::$markets"
 
   build:
     needs: prepare
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        markets: ${{fromJSON(needs.prepare.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
         name: checkout commit
