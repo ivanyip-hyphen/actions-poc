@@ -91,7 +91,7 @@ jobs:
         id: createTag
         uses: rickstaa/action-create-tag@v1
         with:
-          commit_sha: ${{ steps.sha.outputs.sha }}
+          commit_sha: ${{ steps.sha.outputs.tag }}
           tag: ${{ steps.nextTag.outputs.tag }}
       - name: echo tag
         run: |
