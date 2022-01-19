@@ -76,7 +76,7 @@ jobs:
       - name: Get Next Tag
         id: nextTag
         run:
-          echo "::set-output name=tag::$(date -u +"%Y-%m-%dT%H-%M-%SZ")"
+          echo "::set-output name=tag::$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
 
       - name: Create Tag
         id: createTag
