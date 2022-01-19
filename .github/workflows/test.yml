@@ -75,7 +75,7 @@ jobs:
 
       - name: Get Next Tag
         id: nextTag
-        run:
+        run: |
           echo '::echo::on'
           echo "::set-output name=tag::${{matrix.market}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
 
