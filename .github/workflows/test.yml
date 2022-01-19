@@ -110,4 +110,4 @@ jobs:
             git tag $tag $2
             git push origin $tag
           }
-          createTag ${{matrix.market}} ${{github.event.inputs.commit}}
+          createTag ${{matrix.markets}} ${{github.event.inputs.commit}}
