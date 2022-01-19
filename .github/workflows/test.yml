@@ -42,7 +42,6 @@ jobs:
         run: |
           echo '::echo::on'
           markets=()
-          echo ${{toJSON(github.events.inputs)}}
           if ${{ github.event.inputs.singsaver }}; then markets+=('singsaver'); fi;
           if ${{ github.event.inputs.moneyhero }}; then markets+=('moneyhero'); fi;
           if ${{ github.event.inputs.money101 }}; then markets+=('money101'); fi;
@@ -71,3 +70,4 @@ jobs:
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
           echo "market is ${{matrix.markets}}"
           echo ${GITHUB_REF##*/}
+          echo ${{ github.ref }}
