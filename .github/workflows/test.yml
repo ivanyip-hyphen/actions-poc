@@ -87,11 +87,15 @@ jobs:
           echo $(git rev-parse HEAD)
           echo "::set-output name=sha::$(git rev-parse --short HEAD)"
 
-      - name: Create Tag
-        id: createTag
-        run: |
-          git tag -a ${{steps.nextTag.outputs.tag}} ${{steps.sha.outputs.sha}}
-          git push origin ${{steps.nextTag.outputs.tag}}
-      - name: echo tag
-        run: |
-          echo ${{ steps.createTag.outputs.tag }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.nextTag.outputs.tag }}
+          release_name: Release ${{ steps.nextTag.outputs.tag }} to ${{ matrix.markets }}
+          body: Test body
+          commitish: ${{ steps.sha.outputs.sha }}
+          draft: false
+          prerelease: false
