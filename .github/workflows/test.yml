@@ -71,3 +71,12 @@ jobs:
           echo "market is ${{matrix.markets}}"
           echo ${GITHUB_REF##*/}
           echo ${{ github.ref }}
+
+      - name: Create Tag
+        id: createTag
+        uses: anothrNick/github-tag-action@1.36.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: echo tag
+        run: |
+          echo ${{ steps.createTag.outputs.new_tag }}
