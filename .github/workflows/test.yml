@@ -85,13 +85,13 @@ jobs:
         run: |
           echo '::echo:on'
           echo $(git rev-parse HEAD)
-          echo "::set-output name=tag::$(git rev-parse HEAD)"
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
 
       - name: Create Tag
         id: createTag
         uses: rickstaa/action-create-tag@v1
         with:
-          commit_sha: ${{ steps.sha.outputs.tag }}
+          commit_sha: ${{ steps.sha.outputs.sha }}
           tag: ${{ steps.nextTag.outputs.tag }}
       - name: echo tag
         run: |
