@@ -81,8 +81,10 @@ jobs:
           echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
 
       - id: sha
+        name: get SHA
         run: |
           echo '::echo:on'
+          echo $(git rev-parse HEAD)
           echo "::set-output name=val::$(git rev-parse HEAD)"
 
       - name: Create Tag
