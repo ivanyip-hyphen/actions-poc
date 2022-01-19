@@ -60,6 +60,7 @@ jobs:
         name: checkout commit
         with:
           ref: ${{ github.event.inputs.commit }}
+          fetch-depth: '0'
 
       - name: greet
         run: | 
