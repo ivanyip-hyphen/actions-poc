@@ -67,7 +67,7 @@ jobs:
           echo "environment is ${{ github.event.inputs.environment }}"
           echo "boolean is ${{ github.event.inputs.boolean }}"
           echo "commit is ${{ github.event.inputs.commit }}"
-          echo "sha is ${{ github.sha }}"
+          echo "sha is $(git rev-parse --short HEAD)"
           echo "ref is ${{ github.ref }}"
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
           echo "market is ${{matrix.markets}}"
