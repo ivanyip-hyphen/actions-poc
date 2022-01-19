@@ -96,3 +96,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ steps.sha.outputs.sha }}
           custom_tag: ${{ steps.nextTag.outputs.tag }}
+          tag_prefix: ''
