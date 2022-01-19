@@ -71,7 +71,7 @@ jobs:
           echo "ref is ${{ github.ref }}"
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
           echo "market is ${{matrix.markets}}"
-          echo ${GITHUB_REF##*/}
+          echo ${{GITHUB_REF##*/}}
           echo ${{ github.ref }}
 
       - name: Get Next Tag
@@ -80,11 +80,14 @@ jobs:
           echo '::echo::on'
           echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
 
+      - id: sha_short
+        run: echo "::set-output name=val::$(git rev-parse --short HEAD)"
+
       - name: Create Tag
         id: createTag
         uses: rickstaa/action-create-tag@v1
         with:
-          commit_sha: ${{ github.sha }}
+          commit_sha: ${{ steps.sha_short.outputs.sha }}
           tag: ${{ steps.nextTag.outputs.tag }}
       - name: echo tag
         run: |
