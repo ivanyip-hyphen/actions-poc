@@ -78,7 +78,7 @@ jobs:
         id: nextTag
         run: |
           echo '::echo::on'
-          echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
+          echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y-%m-%dT%H-%M-%SZ")"
 
       - id: sha
         name: get SHA
