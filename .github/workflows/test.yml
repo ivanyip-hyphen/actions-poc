@@ -107,7 +107,7 @@ jobs:
             local tag=deploy-$market-$version
 
             echo 'Create tag:' $tag
-            git tag -a $tag $2
+            git tag $tag $2
             git push origin $tag
           }
           createTag ${{matrix.market}} ${{github.event.inputs.commit}}
