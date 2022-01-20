@@ -101,11 +101,6 @@ jobs:
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          debug: true
           script: |
             console.log(JSON.stringify(context))
-            # github.git.createRef({
-            #   owner: context.repo.owner,
-            #   repo: context.repo.repo,
-            #   ref: `refs/tags/${process.env.NEXT_VERSION}`,
-            #   sha: context.sha
-            # })
