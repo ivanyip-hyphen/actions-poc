@@ -101,7 +101,7 @@ jobs:
           debug: true
           script: |
             console.log('tag', process.env.TAG)
-            github.git.createRef({
+            github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${process.env.TAG}`,
