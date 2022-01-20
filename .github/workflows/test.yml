@@ -95,7 +95,7 @@ jobs:
             echo 'Create tag:' $tag
             git tag $tag $2
           }
-          createTag ${{matrix.markets}} ${{github.event.inputs.commit}}
+          createTag ${{matrix.markets}} ${{steps.nextTag.outputs.tag}}
       
       - name: Update remote tag
         uses: actions/github-script@v5
