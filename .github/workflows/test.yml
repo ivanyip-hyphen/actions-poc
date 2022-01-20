@@ -92,11 +92,14 @@ jobs:
       #     }
       #     createTag ${{steps.nextTag.outputs.tag}}
       
+      - id: sha
+        run: echo "::set-output name=val::$(git rev-parse HEAD)"
+
       - name: Update remote tag
         uses: actions/github-script@v5
         env:
           TAG: ${{ steps.nextTag.outputs.tag }}
-          SHA: $(git rev-parse --short HEAD)
+          SHA: ${{ steps.sha.outputs.val }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
