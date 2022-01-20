@@ -106,9 +106,15 @@ jobs:
           script: |
             console.log('tag', process.env.TAG)
             console.log('sha', process.env.SHA)
-            github.rest.git.createRef({
+            github.rest.git.createTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${process.env.TAG}`,
-              sha: process.env.SHA
+              message: '',
+              type: 'commit',
+              object: process.env.SHA,
+              tagger: {
+                name: 'Ivan',
+                email: 'ivan.yip@hyphengroup.io'
+              }
             })
