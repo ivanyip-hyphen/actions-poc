@@ -94,9 +94,15 @@ jobs:
       
       - name: Update remote tag
         uses: actions/github-script@v5
+        env:
+          TAG: ${{ steps.nextTag.outputs.tag }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
           script: |
-            console.log(JSON.stringify(context))
-            console.log(JSON.stringify(core))
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${process.env.TAG}`,
+              sha: context.sha
+            })
