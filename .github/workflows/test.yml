@@ -96,6 +96,7 @@ jobs:
         uses: actions/github-script@v5
         env:
           TAG: ${{ steps.nextTag.outputs.tag }}
+          SHA: $(git rev-parse --short HEAD)
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
@@ -105,5 +106,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${process.env.TAG}`,
-              sha: context.sha
+              sha: process.env.SHA
             })
