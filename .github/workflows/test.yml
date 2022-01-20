@@ -100,7 +100,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
           script: |
-            console.log('tag', proces.env.TAG)
+            console.log('tag', process.env.TAG)
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
