@@ -79,18 +79,18 @@ jobs:
         run: |
           echo '::echo::on'
           echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
-      - name: CreateTag
-        run: |
-          createTag () {
-            local market=$1
-            local version=$2
-            local tag=deploy-$market-$version
+      # - name: CreateTag
+      #   run: |
+      #     createTag () {
+      #       local market=$1
+      #       local version=$2
+      #       local tag=deploy-$market-$version
 
-            echo 'Create tag:' $tag
-            git tag $tag
-            git push origin $tag
-          }
-          createTag ${{steps.nextTag.outputs.tag}}
+      #       echo 'Create tag:' $tag
+      #       git tag $tag
+      #       git push origin $tag
+      #     }
+      #     createTag ${{steps.nextTag.outputs.tag}}
       
       - name: Update remote tag
         uses: actions/github-script@v5
