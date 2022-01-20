@@ -62,7 +62,7 @@ jobs:
           ref: ${{ github.event.inputs.commit }}
           fetch-depth: '0'
 
-      - name: greet
+      - name: Print
         run: | 
           echo "environment is ${{ github.event.inputs.environment }}"
           echo "boolean is ${{ github.event.inputs.boolean }}"
@@ -71,7 +71,7 @@ jobs:
           echo "ref is ${{ github.ref }}"
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
           echo "market is ${{matrix.markets}}"
-          echo $(GITHUB_REF##*/)
+          echo ${GITHUB_REF##*/}
           echo ${{ github.ref }}
 
       - name: Get Next Tag
@@ -79,42 +79,15 @@ jobs:
         run: |
           echo '::echo::on'
           echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
-      # - name: CreateTag
-      #   run: |
-      #     createTag () {
-      #       local market=$1
-      #       local version=$2
-      #       local tag=deploy-$market-$version
+      - name: CreateTag
+        run: |
+          createTag () {
+            local market=$1
+            local version=$2
+            local tag=deploy-$market-$version
 
-      #       echo 'Create tag:' $tag
-      #       git tag $tag
-      #       git push origin $tag
-      #     }
-      #     createTag ${{steps.nextTag.outputs.tag}}
-      
-      - id: sha
-        run: echo "::set-output name=val::$(git rev-parse HEAD)"
-
-      - name: Update remote tag
-        uses: actions/github-script@v5
-        env:
-          TAG: ${{ steps.nextTag.outputs.tag }}
-          SHA: ${{ steps.sha.outputs.val }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          debug: true
-          script: |
-            console.log('tag', process.env.TAG)
-            console.log('sha', process.env.SHA)
-            github.rest.git.createTag({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag: `refs/tags/${process.env.TAG}`,
-              message: '',
-              type: 'commit',
-              object: process.env.SHA,
-              tagger: {
-                name: 'Ivan',
-                email: 'ivan.yip@hyphengroup.io'
-              }
-            })
+            echo 'Create tag:' $tag
+            git tag $tag
+            git push origin $tag
+          }
+          createTag ${{steps.nextTag.outputs.tag}}
