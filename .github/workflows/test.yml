@@ -90,12 +90,12 @@ jobs:
           createTag () {
             local market=$1
             local version=`git rev-parse --short HEAD`
-            local tag=deploy-$market-$version
+            local tag=deploy-$market-${{steps.nextTag.outputs.tag}}
 
             echo 'Create tag:' $tag
-            git tag $tag $2
+            git tag $tag
+            git push origin $tag
           }
-          createTag ${{matrix.markets}} ${{steps.nextTag.outputs.tag}}
       
       - name: Update remote tag
         uses: actions/github-script@v5
