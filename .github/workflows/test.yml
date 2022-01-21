@@ -107,7 +107,7 @@ jobs:
       - name: Create Release
         id: create_release
         continue-on-error: true
-        if: ${{ github.event.inputs.dry_run != true }} # create a release only when a new tag is created
+        if: ${{ github.event.inputs.dry_run != 'true' }} # create a release only when a new tag is created
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
