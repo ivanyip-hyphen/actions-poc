@@ -29,6 +29,7 @@ on:
         description: moneymax
       dry_run:
         description: Dry run?
+        type: boolean
         required: false
 
 jobs:
