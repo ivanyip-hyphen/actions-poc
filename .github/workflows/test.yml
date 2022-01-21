@@ -95,31 +95,24 @@ jobs:
       - id: sha_short
         run: echo "::set-output name=val::$(git rev-parse --short HEAD)"
 
-      - name: Get Tag
-        id: get_tag
-        run: |
-          if ${{ startsWith(github.ref, 'refs/tags/v') }}; then tag=${{ github.ref }}; else tag=deploy-${{ matrix.market }}-$(git rev-parse --short HEAD); fi;
-          echo "::set-output name=val::${tag}"
-
-      - name: Tag Version
+      - name: Create Tag
         id: create_tag
-        uses: mathieudutour/github-tag-action@v6.0
-        if: ${{ github.event.inputs.dry_run != true }} # Only tag if not a dry run and not already has a tag
-        continue-on-error: true # it may fail if reference already exists, continue anyway
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.get_tag.outputs.val }}
-          tag_prefix: ''
-          dry_run: ${{ github.event.inputs.dry_run }}
+        continue-on-error: true
+        run: |
+          tag=deploy-${{ matrix.market }}-$(git rev-parse --short HEAD)
+          echo 'tag is ${tag}'
+          echo "::set-output name=val::${tag}"
+          git tag ${tag}
 
       - name: Create Release
         id: create_release
-        if: ${{ github.event.inputs.dry_run != true && steps.create_tag.conclusion == 'success' }} # create a release only when a new tag is created
+        continue-on-error: true
+        if: ${{ github.event.inputs.dry_run != true }} # create a release only when a new tag is created
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_tag.outputs.val }}
+          tag_name: ${{ steps.create_tag.outputs.val }}
           release_name: Release ${{ steps.sha_short.outputs.val }} to ${{ matrix.market }}
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
@@ -154,5 +147,5 @@ jobs:
       - name: Prepare ITSM ticket
         id: prepare_ticket
         run: |
-          ticket_data='{ "name": "ECMS-Release", "release": "${{ steps.sha_short.outputs.val }}", "id_git": "${{ steps.market.outputs.name }}", "description": "${{ steps.get_tag.outputs.val }}"}'
+          ticket_data='{ "name": "ECMS-Release", "release": "${{ steps.sha_short.outputs.val }}", "id_git": "${{ steps.market.outputs.name }}", "description": "${{ steps.create_tag.outputs.val }}"}'
           echo "::set-output name=val::$ticket_data"
