@@ -97,11 +97,13 @@ jobs:
 
       - name: Get Tag
         id: get_tag
-        run: echo "::set-output name=val::deploy-${{ matrix.market }}-$(git rev-parse --short HEAD)"
-      
+        run: |
+          if ${{ startsWith(github.ref, 'refs/tags/v') }}; then tag=${{ github.ref }}; else tag=deploy-${{ matrix.market }}-$(git rev-parse --short HEAD); fi;
+          echo "::set-output name=val::${tag}"
+
       - name: Tag Version
         uses: mathieudutour/github-tag-action@v6.0
-        if: ${{ github.event.inputs.dry_run != true }}
+        if: ${{ github.event.inputs.dry_run != true && startsWith(github.ref, 'refs/tags/v') != true }} # Only tag if not a dry run and not already has a tag
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.get_tag.outputs.val }}
