@@ -120,10 +120,35 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
-
+      - name: Convert to ITSM Market name     
+        id: market
+        run: |
+          case ${{ matrix.market }} in
+           singsaver)
+            echo "::set-output name=name::SingSaver"
+             ;;
+           comparehero)
+             echo "::set-output name=name::CompareHero"
+             ;;
+           moneyhero)
+             echo "::set-output name=name::MoneyHero"
+             ;;
+           moneyguru)
+             echo "::set-output name=name::MoneyGuru"
+             ;;
+           moneymax)
+             echo "::set-output name=name::MoneyMax"
+             ;;
+           money101)
+             echo "::set-output name=name::Money101"
+             ;;
+           *)
+            echo -n "unknown"
+             ;;
+          esac
 
       - name: Prepare ITSM ticket
         id: prepare_ticket
         run: |
-          ticket_data='{ "name": "ECMS-Release", "release": "${{ steps.sha_short.outputs.val }}", "id_git": "${{ steps.market.outputs.name }}", "description": "${{ steps.get_tag.outputs.tag }}"}'
+          ticket_data='{ "name": "ECMS-Release", "release": "${{ steps.sha_short.outputs.val }}", "id_git": "${{ steps.market.outputs.name }}", "description": "${{ steps.get_tag.outputs.val }}"}'
           echo "::set-output name=val::$ticket_data"
