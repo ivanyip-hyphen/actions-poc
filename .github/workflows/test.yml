@@ -76,7 +76,6 @@ jobs:
         id: baseref
         with:
           repository: ${{ github.repository }}
-          prefix: 'deploy-${{ matrix.market }}-'
           releases-only: true
 
       - name: Log Last Release Tag
