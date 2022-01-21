@@ -27,10 +27,9 @@ on:
         required: false
         type: boolean
         description: moneymax
-      commit:
+      dry_run:
+        description: Dry run?
         required: false
-        type: string
-        description: Enter commit hash (use branch HEAD if not specified)
 
 jobs:
   gen-matrix:
@@ -41,14 +40,14 @@ jobs:
       - id: set-matrix
         run: |
           echo '::echo::on'
-          markets=()
-          if ${{ github.event.inputs.singsaver }}; then markets+=('singsaver'); fi;
-          if ${{ github.event.inputs.moneyhero }}; then markets+=('moneyhero'); fi;
-          if ${{ github.event.inputs.money101 }}; then markets+=('money101'); fi;
-          if ${{ github.event.inputs.comparehero }}; then markets+=('comparehero'); fi;
-          if ${{ github.event.inputs.moneyguru }}; then markets+=('moneyguru'); fi;
-          if ${{ github.event.inputs.moneymax }}; then markets+=('moneymax'); fi;
-          echo "::set-output name=matrix::{\"markets\": $(jq --compact-output --null-input '$ARGS.positional' --args "${markets[@]}")}"
+          market=()
+          if ${{ github.event.inputs.singsaver }}; then market+=('singsaver'); fi;
+          if ${{ github.event.inputs.moneyhero }}; then market+=('moneyhero'); fi;
+          if ${{ github.event.inputs.money101 }}; then market+=('money101'); fi;
+          if ${{ github.event.inputs.comparehero }}; then market+=('comparehero'); fi;
+          if ${{ github.event.inputs.moneyguru }}; then market+=('moneyguru'); fi;
+          if ${{ github.event.inputs.moneymax }}; then market+=('moneymax'); fi;
+          echo "::set-output name=matrix::{\"market\": $(jq --compact-output --null-input '$ARGS.positional' --args "${market[@]}")}"
 
   build:
     needs: gen-matrix
@@ -58,9 +57,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: checkout commit
-        with:
-          ref: ${{ github.event.inputs.commit }}
-          fetch-depth: '0'
 
       - name: Print
         run: | 
@@ -70,24 +66,63 @@ jobs:
           echo "sha is $(git rev-parse --short HEAD)"
           echo "ref is ${{ github.ref }}"
           echo "matrix is ${{fromJSON(needs.gen-matrix.outputs.matrix)}}"
-          echo "market is ${{matrix.markets}}"
+          echo "market is ${{matrix.market}}"
           echo ${GITHUB_REF##*/}
           echo ${{ github.ref }}
 
-      - name: Get Next Tag
-        id: nextTag
-        run: |
-          echo '::echo::on'
-          echo "::set-output name=tag::${{matrix.markets}}-$(date -u +"%Y.%m.%dT%H.%M.%SZ")"
-      - name: CreateTag
-        run: |
-          createTag () {
-            local market=$1
-            local version=$2
-            local tag=deploy-$market-$version
+      - uses: oprypin/find-latest-tag@v1.1.0
+        id: baseref
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'deploy-${{ matrix.market }}-'
+          releases-only: true
 
-            echo 'Create tag:' $tag
-            git tag $tag
-            git push origin $tag
-          }
-          createTag ${{steps.nextTag.outputs.tag}}
+      - name: Log Last Release Tag
+        run: echo '${{ steps.baseref.outputs.tag }}'
+
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v1.0.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          head-ref: ${{ github.sha }}
+          base-ref: ${{ steps.baseref.outputs.tag }}
+
+      - name: Log changelog
+        run: echo '${{ steps.changelog.outputs.changelog }}'
+
+      - id: sha_short
+        run: echo "::set-output name=val::$(git rev-parse --short HEAD)"
+
+      - name: Get Tag
+        id: get_tag
+        run: echo "::set-output name=val::deploy-${{ matrix.market }}-$(git rev-parse --short HEAD)"
+      
+      - name: Tag Version
+        uses: mathieudutour/github-tag-action@v6.0
+        if: ${{ !github.event.inputs.dry_run }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.get_tag.outputs.val }}
+          tag_prefix: ''
+          dry_run: ${{ github.event.inputs.dry_run }}
+
+      - name: Create Release
+        id: create_release
+        if: ${{ !github.event.inputs.dry_run }}
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_tag.outputs.val }}
+          release_name: Release ${{ steps.sha_short.outputs.val }} to ${{ matrix.market }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+
+
+      - name: Prepare ITSM ticket
+        id: prepare_ticket
+        run: |
+          ticket_data='{ "name": "ECMS-Release", "release": "${{ steps.sha_short.outputs.val }}", "id_git": "${{ steps.market.outputs.name }}", "description": "${{ steps.get_tag.outputs.tag }}"}'
+          echo "::set-output name=val::$ticket_data"
