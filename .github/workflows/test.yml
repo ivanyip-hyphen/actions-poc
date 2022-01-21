@@ -100,7 +100,7 @@ jobs:
         continue-on-error: true
         run: |
           tag=deploy-${{ matrix.market }}-$(git rev-parse --short HEAD)
-          echo 'tag is ${tag}'
+          echo "tag is $tag"
           echo "::set-output name=val::${tag}"
           git tag ${tag}
 
